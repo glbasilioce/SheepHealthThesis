@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}About - Sheep Disease Detection{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card" style="background: white; padding: 40px;">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-info-circle"></i> About This Project
+            </h2>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h4><i class="fas fa-bullseye"></i> Project Overview</h4>
+                    <p>
+                        The Sheep Disease Detection System is an AI-powered web application 
+                        that helps identify common sheep diseases through image analysis. 
+                        This project was developed as an undergraduate Computer Engineering 
+                        thesis project.
+                    </p>
+
+                    <h4 class="mt-4"><i class="fas fa-brain"></i> Technology</h4>
+                    <ul>
+                        <li><strong>Model:</strong> MobileNetV2 (Transfer Learning)</li>
+                        <li><strong>Framework:</strong> TensorFlow/Keras</li>
+                        <li><strong>Backend:</strong> Flask (Python)</li>
+                        <li><strong>Frontend:</strong> Bootstrap 5</li>
+                        <li><strong>Training Images:</strong> 833 images (augmented)</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-6">
+                    <h4><i class="fas fa-chart-line"></i> Performance</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Disease</th>
+                                <th>Accuracy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Flystrike</td>
+                                <td><span class="badge bg-success">100.00%</span></td>
+                            </tr>
+                            <tr>
+                                <td>Healthy</td>
+                                <td><span class="badge bg-success">91.67%</span></td>
+                            </tr>
+                            <tr>
+                                <td>Sheep Scab</td>
+                                <td><span class="badge bg-success">90.91%</span></td>
+                            </tr>
+                            <tr>
+                                <td>Orf</td>
+                                <td><span class="badge bg-success">90.00%</span></td>
+                            </tr>
+                            <tr>
+                                <td>Ringworm</td>
+                                <td><span class="badge bg-warning">50.00%</span></td>
+                            </tr>
+                            <tr class="table-primary">
+                                <th>Overall</th>
+                                <th><span class="badge bg-primary">87.50%</span></th>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb"></i>
+                        <strong>Note:</strong> Ringworm's lower accuracy is due to limited 
+                        training data (37 images). The model maintains 100% precision for ringworm, 
+                        meaning when it predicts ringworm, it's always correct.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <h4><i class="fas fa-shield-alt"></i> Disclaimer</h4>
+                <div class="alert alert-warning">
+                    <p class="mb-0">
+                        This system is designed as a supportive diagnostic tool and should NOT 
+                        replace professional veterinary examination. Always consult a qualified 
+                        veterinarian for accurate diagnosis and treatment of animal diseases.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <h5><i class="fas fa-graduation-cap"></i> Thesis Project 2026</h5>
+                <p class="text-muted">
+                    Computer Engineering Department<br>
+                    Developed with ❤️ for improving livestock health
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction History{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card" style="background: white; padding: 40px;">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-history"></i> Prediction History
+            </h2>
+            
+            {% if predictions %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                            <th>Date & Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pred in predictions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ pred.filename }}</td>
+                            <td>
+                                <span class="badge bg-primary">{{ pred.predicted_class }}</span>
+                            </td>
+                            <td>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar 
+                                        {% if pred.confidence >= 75 %}bg-success
+                                        {% elif pred.confidence >= 60 %}bg-warning
+                                        {% else %}bg-danger{% endif %}"
+                                        style="width: {{ pred.confidence }}%">
+                                        {{ "%.1f"|format(pred.confidence) }}%
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ pred.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle"></i>
+                No predictions yet. Upload an image to get started!
+            </div>
+            {% endif %}
+            
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> New Prediction
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

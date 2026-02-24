@@ -1,0 +1,24 @@
+MODEL PERFORMANCE SUMMARY
+============================================================
+
+OVERALL PERFORMANCE:
+------------------------------------------------------------
+Total Test Images: 147
+Correct Predictions: 144
+Incorrect Predictions: 3
+Overall Accuracy: 0.9796 (97.96%)
+
+PER-CLASS STATISTICS:
+------------------------------------------------------------
+Class             Accuracy  Precision     Recall   F1-Score
+------------------------------------------------------------
+Flystrike          90.32%   100.00%    90.32%    94.92%
+Healthy           100.00%    95.56%   100.00%    97.73%
+Orf               100.00%   100.00%   100.00%   100.00%
+Sheep Scab        100.00%    97.50%   100.00%    98.73%
+
+CONFIDENCE STATISTICS:
+------------------------------------------------------------
+Average Confidence: 0.9121 (91.21%)
+Avg Confidence (Correct): 0.9211 (92.11%)
+Avg Confidence (Incorrect): 0.4787 (47.87%)

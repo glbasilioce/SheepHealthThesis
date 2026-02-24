@@ -1,0 +1,54 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.flaskenv
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project specific - Don't sync these!
+dataset/raw/           
+dataset/processed/     
+*.h5
+*.tflite
+models/saved_models/
+app/static/uploads/
+*.db
+*.sqlite
+*.sqlite3
+training_*.png
+*.h5
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+
+# Temporary files
+*.tmp
+temp/

@@ -1,0 +1,24 @@
+SAMPLE PREDICTIONS
+============================================================
+
+CORRECT PREDICTIONS (First 10):
+------------------------------------------------------------
+ 1. True: Orf             | Pred: Orf             (99.94%)
+ 2. True: Orf             | Pred: Orf             (99.35%)
+ 3. True: Orf             | Pred: Orf             (99.22%)
+ 4. True: Flystrike       | Pred: Flystrike       (99.82%)
+ 5. True: Sheep Scab      | Pred: Sheep Scab      (98.82%)
+ 6. True: Flystrike       | Pred: Flystrike       (95.62%)
+ 7. True: Healthy         | Pred: Healthy         (99.88%)
+ 8. True: Orf             | Pred: Orf             (99.92%)
+ 9. True: Flystrike       | Pred: Flystrike       (98.64%)
+10. True: Flystrike       | Pred: Flystrike       (83.84%)
+
+INCORRECT PREDICTIONS (All):
+------------------------------------------------------------
+ 1. True: Flystrike       | Pred: Sheep Scab      (51.50%)
+    Probabilities: Flystrike: 48.0%  Healthy: 0.0%  Orf: 0.5%  Sheep Scab: 51.5%  
+ 2. True: Flystrike       | Pred: Healthy         (38.10%)
+    Probabilities: Flystrike: 35.8%  Healthy: 38.1%  Orf: 1.7%  Sheep Scab: 24.4%  
+ 3. True: Flystrike       | Pred: Healthy         (54.00%)
+    Probabilities: Flystrike: 37.2%  Healthy: 54.0%  Orf: 0.6%  Sheep Scab: 8.2%  

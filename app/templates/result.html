@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Sheep Disease Detection{% endblock %}
+
+{% block extra_css %}
+<style>
+    .result-card {
+        background: white;
+        padding: 40px;
+    }
+    
+    .prediction-badge {
+        font-size: 2rem;
+        padding: 20px 40px;
+        border-radius: 50px;
+        display: inline-block;
+        margin: 20px 0;
+    }
+    
+    .confidence-bar {
+        height: 30px;
+        border-radius: 15px;
+        background: #e9ecef;
+        overflow: hidden;
+        margin: 10px 0;
+    }
+    
+    .confidence-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 15px;
+        color: white;
+        font-weight: bold;
+        transition: width 1s ease;
+    }
+    
+    .disease-info-card {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 10px;
+        border-left: 5px solid var(--primary-color);
+    }
+    
+    .uploaded-image {
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .probability-item {
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 8px;
+        background: white;
+        border: 1px solid #dee2e6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card result-card">
+            <!-- Header -->
+            <div class="text-center">
+                <h2>
+                    <i class="fas fa-microscope"></i> Analysis Results
+                </h2>
+                <hr>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Image -->
+                <div class="col-md-6 text-center">
+                    <h5>Uploaded Image</h5>
+                    <img src="{{ url_for('static', filename=image_path) }}" 
+                         class="uploaded-image mt-3" 
+                         alt="Uploaded sheep image">
+                </div>
+
+                <!-- Prediction -->
+                <div class="col-md-6">
+                    <h5>Prediction</h5>
+                    
+                    <div class="text-center mt-3">
+                        <span class="prediction-badge badge bg-{{ result.disease_info.color }}">
+                            {{ result.disease_name }}
+                        </span>
+                        
+                        <!-- Confidence display removed - model accuracy is low -->
+                        <!-- 
+                        <h6 class="mt-4">Confidence</h6>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: {{ result.confidence }}%">
+                                {{ "%.1f"|format(result.confidence) }}%
+                            </div>
+                        </div>
+                        -->
+
+                    <!-- ✨ ADD CONFIDENCE WARNING HERE -->
+                    {% if result.warning %}
+                    <div class="alert alert-{{ 'danger' if result.warning_level == 'high' else 'warning' if result.warning_level == 'medium' else 'info' }} mt-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Notice:</strong> {{ result.warning }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if result.sheep_info %}
+                    <div class="alert 
+                        {% if result.sheep_info_level == 'excellent' %}alert-success
+                        {% elif result.sheep_info_level == 'good' %}alert-info
+                        {% else %}alert-warning{% endif %} 
+                        mt-3">
+                        <h6><i class="fas fa-check-circle"></i> Image Validation</h6>
+                        <p class="mb-0">{{ result.sheep_info }}</p>
+                    </div>
+                    {% endif %}
+
+                <!-- Disease Details -->
+                <div class="mt-5">
+                    <h4 class="fw-bold mb-4">
+                        <i class="fas fa-info-circle"></i> About {{ result.disease_details.name }}
+                    </h4>
+                    
+                    <!-- Description -->
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="mb-3"><strong>Description:</strong> {{ result.disease_details.description }}</p>
+                            <p class="mb-0">
+                                <span class="badge bg-{{ 'danger' if 'High' in result.disease_details.severity else 'warning' if result.disease_details.severity == 'Moderate' else 'success' }} me-2">
+                                    Severity: {{ result.disease_details.severity }}
+                                </span>
+                                <span class="badge bg-{{ 'danger' if 'Yes' in result.disease_details.contagious else 'success' }}">
+                                    {{ result.disease_details.contagious }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Symptoms -->
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="fas fa-stethoscope"></i> Common Symptoms
+                                </div>
+                                <div class="card-body">
+                                    <ul class="mb-0">
+                                        {% for symptom in result.disease_details.symptoms %}
+                                        <li>{{ symptom }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Treatment -->
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <i class="fas fa-medkit"></i> Treatment & Care
+                                </div>
+                                <div class="card-body">
+                                    <ol class="mb-0">
+                                        {% for treatment in result.disease_details.treatment %}
+                                        <li>{{ treatment }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Veterinary Disclaimer -->
+                    <div class="alert alert-warning mt-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Important Disclaimer:</strong> This AI system is a screening tool only. Always consult a qualified veterinarian for proper diagnosis and treatment. Do not rely solely on this prediction for medical decisions.
+                    </div>
+                </div>
+
+                    <!-- All Predictions -->
+                    <div class="mt-4">
+                        <h6>All Predictions:</h6>
+                        {% for disease, prob in result.all_predictions.items() %}
+                        <div class="probability-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><strong>{{ disease|title }}</strong></span>
+                                <span class="badge bg-secondary">{{ "%.1f"|format(prob) }}%</span>
+                            </div>
+                            <div class="progress mt-2" style="height: 8px;">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ prob }}%; background: linear-gradient(90deg, #667eea, #764ba2);">
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disease Information -->
+            <div class="mt-5">
+                <h4>
+                    <i class="fas fa-info-circle"></i> Disease Information
+                </h4>
+                <hr>
+
+                <div class="disease-info-card">
+                    <h5>{{ result.disease_info.name }}</h5>
+                    <p><strong>Description:</strong> {{ result.disease_info.description }}</p>
+                    <p><strong>Symptoms:</strong> {{ result.disease_info.symptoms }}</p>
+                    <p><strong>Treatment:</strong> {{ result.disease_info.treatment }}</p>
+                    <p class="mb-0">
+                        <strong>Severity:</strong> 
+                        <span class="badge bg-{{ result.disease_info.color }}">
+                            {{ result.disease_info.severity }}
+                        </span>
+                    </p>
+                </div>
+
+                {% if result.predicted_class != 'healthy' %}
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important:</strong> This is an AI-based prediction and should not replace professional veterinary diagnosis. 
+                    Please consult a veterinarian for confirmation and treatment.
+                </div>
+                {% else %}
+                <div class="alert alert-success mt-3">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Good News:</strong> The sheep appears healthy! Continue regular monitoring and preventive care.
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-upload"></i> Analyze Another Image
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

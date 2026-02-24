@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}Health History - Sheep Health System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .history-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 400px;
+        margin: 20px 0;
+    }
+    
+    .stat-summary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .stat-summary h3 {
+        margin: 0;
+        font-size: 2.5rem;
+    }
+    
+    .stat-summary p {
+        margin: 5px 0 0 0;
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-chart-line"></i> Health History & Analytics</h2>
+            <p class="text-muted">Historical health data and trends for DEMO_SHEEP</p>
+        </div>
+    </div>
+    
+    <!-- Summary Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-summary">
+                <h3 id="avgOHI">--</h3>
+                <p>Average OHI Score</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-summary" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h3 id="totalReadings">--</h3>
+                <p>Total Readings</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-summary" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h3 id="avgTemp">--</h3>
+                <p>Avg Temperature (°C)</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-summary" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <h3 id="avgHR">--</h3>
+                <p>Avg Heart Rate (bpm)</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts -->
+    <div class="row">
+        <!-- OHI Trend -->
+        <div class="col-md-12 mb-4">
+            <div class="history-card">
+                <h4><i class="fas fa-chart-area"></i> OHI Score Over Time</h4>
+                <canvas id="ohiChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Vital Signs Chart -->
+        <div class="col-md-12 mb-4">
+            <div class="history-card">
+                <h4><i class="fas fa-heartbeat"></i> Vital Signs Trends</h4>
+                <canvas id="vitalsChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Recent Readings Table -->
+        <div class="col-md-12">
+            <div class="history-card">
+                <h4><i class="fas fa-table"></i> Recent Readings (Last 20)</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>OHI Score</th>
+                                <th>Status</th>
+                                <th>Heart Rate</th>
+                                <th>Temperature</th>
+                                <th>SpO2</th>
+                                <th>Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="readingsTable">
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Export Buttons -->
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="{{ url_for('main.export_health_csv') }}" class="btn btn-success btn-lg me-2">
+                <i class="fas fa-file-csv"></i> Export as CSV
+            </a>
+            <a href="{{ url_for('main.export_health_pdf') }}" class="btn btn-danger btn-lg">
+                <i class="fas fa-file-pdf"></i> Export as PDF
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let ohiChart, vitalsChart;
+    
+    // Fetch health history data
+    fetch('/api/health-history')
+        .then(response => response.json())
+        .then(data => {
+            updateSummaryStats(data.summary);
+            createOHIChart(data.readings);
+            createVitalsChart(data.readings);
+            updateTable(data.recent);
+        });
+    
+    function updateSummaryStats(summary) {
+        document.getElementById('avgOHI').textContent = summary.avg_ohi.toFixed(1);
+        document.getElementById('totalReadings').textContent = summary.total_readings;
+        document.getElementById('avgTemp').textContent = summary.avg_temp.toFixed(1);
+        document.getElementById('avgHR').textContent = summary.avg_hr.toFixed(0);
+    }
+    
+    function createOHIChart(readings) {
+        const ctx = document.getElementById('ohiChart').getContext('2d');
+        const labels = readings.map(r => new Date(r.timestamp).toLocaleTimeString());
+        const data = readings.map(r => r.ohi_score);
+        
+        ohiChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'OHI Score',
+                    data: data,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'OHI Score (0-100)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    
+    function createVitalsChart(readings) {
+        const ctx = document.getElementById('vitalsChart').getContext('2d');
+        const labels = readings.map(r => new Date(r.timestamp).toLocaleTimeString());
+        
+        vitalsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Heart Rate (bpm)',
+                        data: readings.map(r => r.heart_rate),
+                        borderColor: '#f5576c',
+                        backgroundColor: 'rgba(245, 87, 108, 0.1)',
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Body Temp (°C)',
+                        data: readings.map(r => r.body_temp),
+                        borderColor: '#f093fb',
+                        backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                        yAxisID: 'y1',
+                    },
+                    {
+                        label: 'SpO2 (%)',
+                        data: readings.map(r => r.spo2),
+                        borderColor: '#4facfe',
+                        backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                        yAxisID: 'y',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Heart Rate / SpO2'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    },
+                }
+            }
+        });
+    }
+    
+    function updateTable(readings) {
+        const tbody = document.getElementById('readingsTable');
+        tbody.innerHTML = '';
+        
+        readings.forEach(reading => {
+            const row = document.createElement('tr');
+            const statusBadge = `<span class="badge bg-${
+                reading.health_status === 'normal' ? 'success' :
+                reading.health_status === 'mild' ? 'warning' : 'danger'
+            }">${reading.health_status}</span>`;
+            
+            row.innerHTML = `
+                <td>${new Date(reading.timestamp).toLocaleString()}</td>
+                <td>${reading.ohi_score.toFixed(1)}</td>
+                <td>${statusBadge}</td>
+                <td>${reading.heart_rate}</td>
+                <td>${reading.body_temp}°C</td>
+                <td>${reading.spo2}%</td>
+                <td>${reading.activity_level.toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+</script>
+{% endblock %}
