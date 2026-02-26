@@ -24,34 +24,115 @@ DISEASE_INFO = {
     'Flystrike': {
         'name': 'Flystrike (Myiasis)',
         'description': 'A condition caused by flies laying eggs in the sheep\'s wool, leading to maggot infestation.',
-        'symptoms': 'Discolored wool, restlessness, wool loss, visible maggots, foul odor',
-        'treatment': 'Immediate veterinary attention required. Remove maggots, clean wound, apply insecticide',
+        'symptoms': [
+            'Discolored wool',
+            'Restlessness',
+            'Wool loss',
+            'Visible maggots',
+            'Foul odor'
+        ],
+        'treatment': [
+            'Immediate veterinary attention required',
+            'Remove maggots manually',
+            'Clean wound thoroughly',
+            'Apply insecticide as prescribed'
+        ],
+        'prevention': [
+            'Regular shearing and crutching',
+            'Daily inspection during fly season',
+            'Keep sheep dry and clean',
+            'Fly control measures',
+            'Tail docking in lambs'
+        ],
         'severity': 'High - Urgent',
+        'contagious': 'Not Contagious',
         'color': 'danger'
     },
+    
     'Healthy': {
         'name': 'Healthy Sheep',
         'description': 'No disease detected. The sheep appears to be in good health.',
-        'symptoms': 'Normal behavior, clean wool, no visible lesions',
-        'treatment': 'Continue regular health monitoring and preventive care',
+        'symptoms': [
+            'Normal behavior',
+            'Clean wool',
+            'No visible lesions',
+            'Good appetite',
+            'Active movement'
+        ],
+        'treatment': [
+            'Continue regular health monitoring',
+            'Maintain preventive care schedule',
+            'Ensure proper nutrition and clean water',
+            'Keep vaccination records up to date'
+        ],
+        'prevention': [
+            'Regular health checkups',
+            'Proper nutrition and clean water',
+            'Good hygiene and shelter',
+            'Vaccination schedule',
+            'Parasite control program'
+        ],
         'severity': 'None',
+        'contagious': 'Not Applicable',
         'color': 'success'
     },
+    
     'Orf': {
         'name': 'Orf (Contagious Ecthyma)',
         'description': 'A viral infection causing crusty scabs, primarily around the mouth and lips.',
-        'symptoms': 'Crusty scabs on mouth/lips, difficulty eating, lesions on udder',
-        'treatment': 'Usually self-limiting. Keep affected areas clean, isolate infected sheep, vaccination available',
+        'symptoms': [
+            'Crusty scabs on mouth/lips',
+            'Difficulty eating',
+            'Lesions on udder',
+            'Weight loss',
+            'Painful sores'
+        ],
+        'treatment': [
+            'Usually self-limiting (heals in 2-4 weeks)',
+            'Keep affected areas clean',
+            'Isolate infected sheep',
+            'Provide soft food and clean water',
+            'Antibiotics for secondary infections if needed'
+        ],
+        'prevention': [
+            'Vaccination before exposure',
+            'Isolate new or infected sheep',
+            'Disinfect feeding equipment',
+            'Wear gloves when handling (zoonotic)',
+            'Quarantine infected animals'
+        ],
         'severity': 'Moderate',
+        'contagious': 'Highly Contagious (including to humans)',
         'color': 'warning'
     },
+    
     'Sheep Scab': {
         'name': 'Sheep Scab (Psoroptic Mange)',
         'description': 'A parasitic infection caused by mites, leading to intense itching and wool loss.',
-        'symptoms': 'Intense itching/scratching, wool loss, crusty skin, yellow discharge',
-        'treatment': 'Injectable or topical acaricides, quarantine affected sheep, treat entire flock',
-        'severity': 'Moderate to High',
-        'color': 'warning'
+        'symptoms': [
+            'Intense itching/scratching',
+            'Wool loss',
+            'Crusty skin',
+            'Yellow discharge',
+            'Restlessness and weight loss'
+        ],
+        'treatment': [
+            'Veterinary-prescribed acaricide treatment',
+            'Complete isolation of infected animals',
+            'Treat entire flock if outbreak occurs',
+            'Repeat treatment as directed by vet',
+            'Disinfect equipment and housing'
+        ],
+        'prevention': [
+            'Regular inspection of flock',
+            'Quarantine new animals (17+ days)',
+            'Avoid contact with infected flocks',
+            'Monitor for signs after exposure',
+            'Report suspected cases (notifiable disease)'
+        ],
+        'severity': 'High - Requires veterinary treatment',
+        'contagious': 'Highly Contagious',
+        'color': 'danger'
     }
 }
 

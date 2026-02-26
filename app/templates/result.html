@@ -58,191 +58,912 @@
         background: white;
         border: 1px solid #dee2e6;
     }
+
+    /* ✨✨✨ BIG ERROR DISPLAY STYLES ✨✨✨ */
+    .error-icon-huge {
+        font-size: 150px;
+        color: #dc3545;
+        animation: shake 0.6s ease-in-out;
+        text-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-15px) rotate(-5deg); }
+        50% { transform: translateX(15px) rotate(5deg); }
+        75% { transform: translateX(-10px) rotate(-3deg); }
+    }
+
+    .error-title {
+        color: #dc3545;
+        font-weight: 900;
+        font-size: 2.8rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+
+    .error-subtitle {
+        color: #721c24;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-top: 15px;
+    }
+
+    .error-box {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+        border: 4px solid #dc3545;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        height: 100%;
+        transition: all 0.4s ease;
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.25);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .error-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .error-box:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 15px 40px rgba(220, 53, 69, 0.4);
+        border-color: #b02a37;
+    }
+
+    .error-box-icon {
+        font-size: 80px;
+        color: #dc3545;
+        margin-bottom: 25px;
+        position: relative;
+        z-index: 1;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .error-box h4 {
+        color: #dc3545;
+        font-weight: 800;
+        margin-bottom: 20px;
+        font-size: 1.6rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .error-box p {
+        color: #721c24;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .error-section {
+        padding: 60px 20px;
+        background: linear-gradient(180deg, #fff 0%, #fff5f5 100%);
+        border-radius: 20px;
+        margin: 40px 0;
+    }
+
+    .try-again-btn {
+        font-size: 1.4rem;
+        padding: 18px 60px;
+        border-radius: 50px;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+        font-weight: 700;
+    }
+
+    .try-again-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+    }
+
+    .faded-image {
+        max-height: 350px;
+        opacity: 0.6;
+        filter: grayscale(60%);
+        border: 3px solid #dc3545;
+    }
+
+    /* ✨✨✨ HERO SECTION STYLES ✨✨✨ */
+    .diagnosis-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 60px 40px;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .hero-icon-container {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .hero-icon {
+        font-size: 50px;
+        opacity: 0.9;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        color: rgba(255,255,255,0.9);
+    }
+
+    .disease-badge-huge {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        margin: 30px auto;
+        max-width: 600px;
+        border: 3px solid rgba(255,255,255,0.3);
+    }
+
+    .disease-icon-huge {
+        font-size: 100px;
+        animation: pulse 2s infinite;
+    }
+
+    .disease-name-huge {
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin: 20px 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .disease-category {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-weight: 500;
+    }
+
+    /* ✨✨✨ CONFIDENCE METER STYLES ✨✨✨ */
+    .confidence-display-modern {
+        margin-top: 40px;
+    }
+
+    .confidence-meter-container {
+        display: flex;
+        justify-content: center;
+        margin: 30px 0;
+    }
+
+    .confidence-circle {
+        position: relative;
+        width: 200px;
+        height: 200px;
+    }
+
+    .confidence-progress {
+        transition: stroke-dashoffset 2s ease-out;
+    }
+
+    .confidence-text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .confidence-percentage {
+        font-size: 3rem;
+        font-weight: 900;
+        color: white;
+        line-height: 1;
+    }
+
+    .confidence-label {
+        font-size: 1rem;
+        opacity: 0.9;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ✨✨✨ SEVERITY INDICATOR STYLES ✨✨✨ */
+    .severity-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .severity-scale {
+        padding: 20px;
+    }
+
+    .severity-track {
+        position: relative;
+        height: 40px;
+        background: linear-gradient(90deg, #28a745 0%, #ffc107 50%, #dc3545 100%);
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    .severity-indicator {
+        position: absolute;
+        top: -10px;
+        width: 60px;
+        height: 60px;
+        background: white;
+        border: 5px solid #667eea;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    .severity-indicator::after {
+        content: "📍";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+    }
+
+    .severity-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+        font-weight: 600;
+    }
+
+    .severity-low { color: #28a745; }
+    .severity-medium { color: #ffc107; }
+    .severity-high { color: #dc3545; }
+
+    .severity-badge-display {
+        text-align: center;
+    }
+
+    .badge-severity {
+        font-size: 1.1rem;
+        padding: 10px 30px;
+        border-radius: 25px;
+}
+
+    /* ✨✨✨ MODERN INFO CARDS STYLES ✨✨✨ */
+    .disease-cards-section {
+        margin-top: 50px;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        height: 100%;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.4s ease;
+        border: 3px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .info-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    .symptoms-card:hover { border-color: #667eea; }
+    .treatment-card:hover { border-color: #28a745; }
+    .prevention-card:hover { border-color: #ffc107; }
+
+    .card-icon-header {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .card-icon-header i {
+        font-size: 35px;
+        color: white;
+    }
+
+    .card-title-modern {
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .card-content {
+        text-align: left;
+    }
+
+    .symptoms-list,
+    .prevention-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .symptoms-list li,
+    .prevention-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+    }
+
+    .symptoms-list li:last-child,
+    .prevention-list li:last-child {
+        border-bottom: none;
+    }
+
+    .symptoms-list i,
+    .prevention-list i {
+        margin-top: 3px;
+        font-size: 16px;
+    }
+
+    .treatment-list {
+        padding-left: 20px;
+        margin: 0;
+    }
+
+    .treatment-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .treatment-list li:last-child {
+        border-bottom: none;
+    }
+
+    /* ✨✨✨ PREDICTIONS COMPARISON STYLES ✨✨✨ */
+    .predictions-comparison {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .prediction-row {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .prediction-row:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
+    }
+
+    .prediction-active {
+        background: linear-gradient(135deg, #e3e9ff, #f0f4ff);
+        border: 2px solid #667eea;
+        font-weight: 600;
+    }
+
+    .prediction-disease-name {
+        font-size: 1.05rem;
+    }
+
+    .prediction-bar-container {
+        height: 12px;
+        background: #e9ecef;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .prediction-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 6px;
+        transition: width 1.5s ease-out;
+        box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+    }
+
+    /* ✨✨✨ OTHER ELEMENTS ✨✨✨ */
+    .uploaded-image-modern {
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        border: 5px solid white;
+    }
+
+    .description-card {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 30px;
+        border-radius: 15px;
+        border-left: 5px solid #667eea;
+    }
+
+    .description-card h5 {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .description-card .lead {
+        color: #34495e;
+        margin-bottom: 0;
+        line-height: 1.8;
+    }
+
+    .disclaimer-alert {
+        border-left: 5px solid #ffc107;
+        background: #fff3cd;
+        border-radius: 10px;
+    }
+
+    .disclaimer-alert .alert-heading {
+        color: #856404;
+        font-weight: 700;
+    }
+
+    .action-btn {
+        padding: 15px 40px;
+        font-size: 1.2rem;
+        border-radius: 50px;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+    }
+
+    /* ✨✨✨ ANIMATIONS ✨✨✨ */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .info-card {
+        animation: slideInUp 0.6s ease-out;
+    }
+
+    .info-card:nth-child(1) { animation-delay: 0.1s; }
+    .info-card:nth-child(2) { animation-delay: 0.2s; }
+    .info-card:nth-child(3) { animation-delay: 0.3s; }
+
+    /* ✨✨✨ RESPONSIVE ADJUSTMENTS ✨✨✨ */
+    @media (max-width: 768px) {
+        .disease-name-huge {
+            font-size: 2.5rem;
+        }
+        
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .disease-icon-huge {
+            font-size: 70px;
+        }
+        
+        .confidence-percentage {
+            font-size: 2.5rem;
+        }
+        
+        .card-title-modern {
+            font-size: 1.2rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-lg-10 mx-auto">
-        <div class="card result-card">
-            <!-- Header -->
-            <div class="text-center">
-                <h2>
-                    <i class="fas fa-microscope"></i> Analysis Results
-                </h2>
-                <hr>
-            </div>
+        
+        <!-- ✨✨✨ ERROR DISPLAY - Check for validation failure OR general error ✨✨✨ -->
+        {% if error or (result and result.get('sheep_info_level') == 'poor') or (result and result.get('sheep_info') and ('does not appear' in result.sheep_info or 'Validation Failed' in result.sheep_info)) %}
 
-            <div class="row mt-4">
-                <!-- Image -->
-                <div class="col-md-6 text-center">
-                    <h5>Uploaded Image</h5>
-                    <img src="{{ url_for('static', filename=image_path) }}" 
-                         class="uploaded-image mt-3" 
-                         alt="Uploaded sheep image">
-                </div>
-
-                <!-- Prediction -->
-                <div class="col-md-6">
-                    <h5>Prediction</h5>
-                    
-                    <div class="text-center mt-3">
-                        <span class="prediction-badge badge bg-{{ result.disease_info.color }}">
-                            {{ result.disease_name }}
-                        </span>
-                        
-                        <!-- Confidence display removed - model accuracy is low -->
-                        <!-- 
-                        <h6 class="mt-4">Confidence</h6>
-                        <div class="confidence-bar">
-                            <div class="confidence-fill" style="width: {{ result.confidence }}%">
-                                {{ "%.1f"|format(result.confidence) }}%
-                            </div>
-                        </div>
-                        -->
-
-                    <!-- ✨ ADD CONFIDENCE WARNING HERE -->
-                    {% if result.warning %}
-                    <div class="alert alert-{{ 'danger' if result.warning_level == 'high' else 'warning' if result.warning_level == 'medium' else 'info' }} mt-3">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>Notice:</strong> {{ result.warning }}
-                    </div>
-                    {% endif %}
-                    
-                    {% if result.sheep_info %}
-                    <div class="alert 
-                        {% if result.sheep_info_level == 'excellent' %}alert-success
-                        {% elif result.sheep_info_level == 'good' %}alert-info
-                        {% else %}alert-warning{% endif %} 
-                        mt-3">
-                        <h6><i class="fas fa-check-circle"></i> Image Validation</h6>
-                        <p class="mb-0">{{ result.sheep_info }}</p>
-                    </div>
-                    {% endif %}
-
-                <!-- Disease Details -->
-                <div class="mt-5">
-                    <h4 class="fw-bold mb-4">
-                        <i class="fas fa-info-circle"></i> About {{ result.disease_details.name }}
-                    </h4>
-                    
-                    <!-- Description -->
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <p class="mb-3"><strong>Description:</strong> {{ result.disease_details.description }}</p>
-                            <p class="mb-0">
-                                <span class="badge bg-{{ 'danger' if 'High' in result.disease_details.severity else 'warning' if result.disease_details.severity == 'Moderate' else 'success' }} me-2">
-                                    Severity: {{ result.disease_details.severity }}
-                                </span>
-                                <span class="badge bg-{{ 'danger' if 'Yes' in result.disease_details.contagious else 'success' }}">
-                                    {{ result.disease_details.contagious }}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <!-- Symptoms -->
-                        <div class="col-md-6 mb-3">
-                            <div class="card h-100">
-                                <div class="card-header bg-primary text-white">
-                                    <i class="fas fa-stethoscope"></i> Common Symptoms
-                                </div>
-                                <div class="card-body">
-                                    <ul class="mb-0">
-                                        {% for symptom in result.disease_details.symptoms %}
-                                        <li>{{ symptom }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Treatment -->
-                        <div class="col-md-6 mb-3">
-                            <div class="card h-100">
-                                <div class="card-header bg-success text-white">
-                                    <i class="fas fa-medkit"></i> Treatment & Care
-                                </div>
-                                <div class="card-body">
-                                    <ol class="mb-0">
-                                        {% for treatment in result.disease_details.treatment %}
-                                        <li>{{ treatment }}</li>
-                                        {% endfor %}
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Veterinary Disclaimer -->
-                    <div class="alert alert-warning mt-3">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>Important Disclaimer:</strong> This AI system is a screening tool only. Always consult a qualified veterinarian for proper diagnosis and treatment. Do not rely solely on this prediction for medical decisions.
-                    </div>
-                </div>
-
-                    <!-- All Predictions -->
-                    <div class="mt-4">
-                        <h6>All Predictions:</h6>
-                        {% for disease, prob in result.all_predictions.items() %}
-                        <div class="probability-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span><strong>{{ disease|title }}</strong></span>
-                                <span class="badge bg-secondary">{{ "%.1f"|format(prob) }}%</span>
-                            </div>
-                            <div class="progress mt-2" style="height: 8px;">
-                                <div class="progress-bar" role="progressbar" 
-                                     style="width: {{ prob }}%; background: linear-gradient(90deg, #667eea, #764ba2);">
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Disease Information -->
-            <div class="mt-5">
-                <h4>
-                    <i class="fas fa-info-circle"></i> Disease Information
-                </h4>
-                <hr>
-
-                <div class="disease-info-card">
-                    <h5>{{ result.disease_info.name }}</h5>
-                    <p><strong>Description:</strong> {{ result.disease_info.description }}</p>
-                    <p><strong>Symptoms:</strong> {{ result.disease_info.symptoms }}</p>
-                    <p><strong>Treatment:</strong> {{ result.disease_info.treatment }}</p>
-                    <p class="mb-0">
-                        <strong>Severity:</strong> 
-                        <span class="badge bg-{{ result.disease_info.color }}">
-                            {{ result.disease_info.severity }}
-                        </span>
-                    </p>
-                </div>
-
-                {% if result.predicted_class != 'healthy' %}
-                <div class="alert alert-warning mt-3">
+        
+        <div class="error-section">
+            <!-- Giant Warning Icon -->
+            <div class="text-center mb-5">
+                <div class="error-icon-huge">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <strong>Important:</strong> This is an AI-based prediction and should not replace professional veterinary diagnosis. 
-                    Please consult a veterinarian for confirmation and treatment.
                 </div>
-                {% else %}
-                <div class="alert alert-success mt-3">
-                    <i class="fas fa-check-circle"></i>
-                    <strong>Good News:</strong> The sheep appears healthy! Continue regular monitoring and preventive care.
+                <h1 class="error-title">⚠️ NO SHEEP DETECTED ⚠️</h1>
+                <p class="error-subtitle">
+                    {% if result and result.sheep_info %}
+                        {{ result.sheep_info.split('.')[0] }}
+                    {% elif error %}
+                        {{ error }}
+                    {% else %}
+                        The uploaded image does not contain a recognizable sheep
+                    {% endif %}
+                </p>
+            </div>
+            
+            <!-- ✨✨✨ THREE LARGE ERROR BOXES ✨✨✨ -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="error-box">
+                        <div class="error-box-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <h4>No Sheep Found</h4>
+                        <p>The AI model could not detect any sheep in the uploaded image. Please make sure your photo clearly shows a sheep.</p>
+                    </div>
                 </div>
-                {% endif %}
+                
+                <div class="col-md-4">
+                    <div class="error-box">
+                        <div class="error-box-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h4>Check Image Quality</h4>
+                        <p>Ensure the image is clear, well-lit, and the sheep is the main subject. Avoid blurry, dark, or very distant photos.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="error-box">
+                        <div class="error-box-icon">
+                            <i class="fas fa-camera-retro"></i>
+                        </div>
+                        <h4>Better Photo Tips</h4>
+                        <p>Take a photo from 1-3 meters away. Make sure the sheep fills most of the frame and is clearly visible.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Actions -->
-            <div class="text-center mt-4">
-                <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-upload"></i> Analyze Another Image
+            <!-- Image Preview -->
+            {% if image_path %}
+            <div class="text-center mb-5">
+                <h5 class="text-muted mb-3"><i class="fas fa-image"></i> Your Uploaded Image:</h5>
+                <img src="{{ url_for('static', filename=image_path) }}" 
+                     class="uploaded-image faded-image" 
+                     alt="Uploaded image">
+            </div>
+            {% endif %}
+
+            <!-- Technical Details (if available) -->
+            {% if result and result.sheep_info %}
+            <div class="alert alert-dark mx-auto mb-4" style="max-width: 900px;">
+                <h6 class="mb-2"><i class="fas fa-microchip"></i> Technical Details:</h6>
+                <small>{{ result.sheep_info }}</small>
+            </div>
+            {% endif %}
+
+            <!-- Try Again Button -->
+            <div class="text-center mb-5">
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg try-again-btn">
+                    <i class="fas fa-redo-alt"></i> TRY AGAIN WITH ANOTHER IMAGE
                 </a>
             </div>
+
+            <!-- Help Tips -->
+            <div class="alert alert-info mx-auto" style="max-width: 900px; font-size: 1.05rem;">
+                <h5><i class="fas fa-lightbulb"></i> <strong>Tips for Best Results:</strong></h5>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li><strong>Use high-quality photos</strong> (not screenshots)</li>
+                            <li><strong>Good lighting</strong> - natural daylight works best</li>
+                            <li><strong>Clear focus</strong> - avoid blurry images</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li><strong>Fill the frame</strong> - sheep should be main subject</li>
+                            <li><strong>Side or front view</strong> of the sheep</li>
+                            <li><strong>Avoid extreme angles</strong> or very distant shots</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+<!-- ✨✨✨ NORMAL RESULTS (Success - Sheep Detected) ✨✨✨ -->
+{% else %}
+
+<!-- ✨✨✨ 1. HERO SECTION - DIAGNOSIS COMPLETE ✨✨✨ -->
+<div class="diagnosis-hero text-center mb-5">
+    <div class="hero-icon-container mb-4">
+        <i class="fas fa-microscope hero-icon"></i>
+    </div>
+    <h2 class="hero-title mb-2">🔬 DIAGNOSIS COMPLETE</h2>
+    <p class="hero-subtitle text-muted">AI Analysis Finished • Powered by MobileNetV2</p>
+    
+    <!-- Huge Disease Badge -->
+    <div class="disease-badge-huge mt-4 mb-4">
+        <div class="disease-icon-huge mb-3">
+            {% if result.predicted_class == 'flystrike' %}
+                <i class="fas fa-bug"></i>
+            {% elif result.predicted_class == 'healthy' %}
+                <i class="fas fa-heartbeat"></i>
+            {% elif result.predicted_class == 'orf' %}
+                <i class="fas fa-virus"></i>
+            {% elif result.predicted_class == 'sheep_scab' %}
+                <i class="fas fa-bacteria"></i>
+            {% endif %}
+        </div>
+        <h1 class="disease-name-huge">{{ result.disease_name }}</h1>
+        <p class="disease-category">Detected Disease</p>
+    </div>
+    
+    <!-- ✨✨✨ 3. CONFIDENCE VISUALIZATION ✨✨✨ -->
+    <div class="confidence-display-modern">
+        <h5 class="mb-3">AI Confidence Level</h5>
+        <div class="confidence-meter-container">
+            <div class="confidence-circle">
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                    <!-- Background circle -->
+                    <circle cx="100" cy="100" r="85" fill="none" stroke="#e9ecef" stroke-width="20"/>
+                    <!-- Progress circle -->
+                    <circle cx="100" cy="100" r="85" fill="none" 
+                            stroke="url(#confidenceGradient)" 
+                            stroke-width="20"
+                            stroke-dasharray="534"
+                            stroke-dashoffset="{{ 534 - (534 * result.confidence / 100) }}"
+                            stroke-linecap="round"
+                            transform="rotate(-90 100 100)"
+                            class="confidence-progress"/>
+                    <!-- Gradient definition -->
+                    <defs>
+                        <linearGradient id="confidenceGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="confidence-text-overlay">
+                    <div class="confidence-percentage">{{ "%.0f"|format(result.confidence) }}%</div>
+                    <div class="confidence-label">
+                        {% if result.confidence >= 90 %}
+                            Very High
+                        {% elif result.confidence >= 75 %}
+                            High
+                        {% elif result.confidence >= 60 %}
+                            Moderate
+                        {% else %}
+                            Low
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<!-- Image and Key Info Side by Side -->
+<div class="row mb-5">
+    <!-- Left: Uploaded Image -->
+    <div class="col-md-5 text-center">
+        <h5 class="mb-3"><i class="fas fa-image"></i> Analyzed Image</h5>
+        <img src="{{ url_for('static', filename=image_path) }}" 
+             class="uploaded-image-modern" 
+             alt="Uploaded sheep image">
+        
+        {% if result.sheep_info and result.sheep_info_level != 'poor' %}
+        <div class="alert alert-{{ 'success' if result.sheep_info_level == 'excellent' else 'info' if result.sheep_info_level == 'good' else 'warning' }} mt-3">
+            <small><i class="fas fa-check-circle"></i> {{ result.sheep_info }}</small>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Right: Severity & All Predictions -->
+    <div class="col-md-7">
+        
+        <!-- ✨✨✨ 4. SEVERITY INDICATOR ✨✨✨ -->
+        <div class="severity-card mb-4">
+            <h5 class="mb-3"><i class="fas fa-exclamation-triangle"></i> Severity Level</h5>
+            
+            <div class="severity-scale">
+                <div class="severity-track">
+                    {% set severity_position = 0 %}
+                    {% if 'High' in result.disease_info.severity or 'Urgent' in result.disease_info.severity %}
+                        {% set severity_position = 85 %}
+                    {% elif 'Moderate' in result.disease_info.severity %}
+                        {% set severity_position = 50 %}
+                    {% else %}
+                        {% set severity_position = 15 %}
+                    {% endif %}
+                    
+                    <div class="severity-indicator" style="left: {{ severity_position }}%;"></div>
+                    
+                    <div class="severity-labels">
+                        <span class="severity-low">Low</span>
+                        <span class="severity-medium">Moderate</span>
+                        <span class="severity-high">High</span>
+                    </div>
+                </div>
+                
+                <div class="severity-badge-display mt-3">
+                    <span class="badge badge-severity bg-{{ 'danger' if 'High' in result.disease_info.severity else 'warning' if 'Moderate' in result.disease_info.severity else 'success' }}">
+                        {{ result.disease_info.severity }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- All Predictions Comparison -->
+        <div class="predictions-comparison">
+            <h5 class="mb-3"><i class="fas fa-chart-bar"></i> All Disease Probabilities</h5>
+            {% for disease, prob in result.all_predictions.items() %}
+            <div class="prediction-row mb-3 {{ 'prediction-active' if disease == result.predicted_class else '' }}">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="prediction-disease-name">
+                        {% if disease == result.predicted_class %}
+                            <i class="fas fa-arrow-right text-primary"></i>
+                        {% endif %}
+                        <strong>{{ disease|title }}</strong>
+                    </span>
+                    <span class="badge bg-{{ 'primary' if disease == result.predicted_class else 'secondary' }}">
+                        {{ "%.1f"|format(prob) }}%
+                    </span>
+                </div>
+                <div class="prediction-bar-container">
+                    <div class="prediction-bar" style="width: {{ prob }}%;"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- ✨✨✨ 2. MODERN DISEASE INFO CARDS ✨✨✨ -->
+<div class="disease-cards-section mb-5">
+    <h4 class="text-center mb-4"><i class="fas fa-info-circle"></i> Detailed Information</h4>
+    
+    <div class="row g-4">
+        <!-- Symptoms Card -->
+        <div class="col-md-4">
+            <div class="info-card symptoms-card">
+                <div class="card-icon-header">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h5 class="card-title-modern">Common Symptoms</h5>
+                <div class="card-content">
+                    <ul class="symptoms-list">
+                        {% for symptom in result.disease_details.symptoms %}
+                        <li><i class="fas fa-check-circle text-primary"></i> {{ symptom }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Treatment Card -->
+        <div class="col-md-4">
+            <div class="info-card treatment-card">
+                <div class="card-icon-header">
+                    <i class="fas fa-medkit"></i>
+                </div>
+                <h5 class="card-title-modern">Treatment & Care</h5>
+                <div class="card-content">
+                    <ol class="treatment-list">
+                        {% for treatment in result.disease_details.treatment %}
+                        <li>{{ treatment }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Prevention Card -->
+        <div class="col-md-4">
+            <div class="info-card prevention-card">
+                <div class="card-icon-header">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h5 class="card-title-modern">Prevention Tips</h5>
+                <div class="card-content">
+                    <ul class="prevention-list">
+                        {% for prevention in result.disease_details.prevention %}
+                        <li><i class="fas fa-shield-virus text-success"></i> {{ prevention }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Description Card -->
+<div class="description-card mb-4">
+    <h5><i class="fas fa-file-medical-alt"></i> About {{ result.disease_details.name }}</h5>
+    <p class="lead">{{ result.disease_details.description }}</p>
+</div>
+
+<!-- Important Disclaimer -->
+{% if result.predicted_class != 'healthy' %}
+<div class="alert alert-warning disclaimer-alert">
+    <div class="d-flex align-items-start">
+        <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+        <div>
+            <h6 class="alert-heading mb-2">Important Medical Disclaimer</h6>
+            <p class="mb-0">This is an AI-based screening tool with {{ "%.1f"|format(result.confidence) }}% confidence. It should <strong>not replace professional veterinary diagnosis</strong>. Please consult a qualified veterinarian for confirmation, proper diagnosis, and treatment plan.</p>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-success">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-check-circle fa-2x me-3"></i>
+        <div>
+            <h6 class="alert-heading mb-1">Excellent Health Status!</h6>
+            <p class="mb-0">The sheep appears healthy. Continue regular monitoring and preventive care to maintain optimal health.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Action Buttons -->
+<div class="text-center mt-5">
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg action-btn">
+        <i class="fas fa-redo-alt"></i> Analyze Another Image
+    </a>
+</div>
+
+{% endif %}
+        
     </div>
 </div>
 {% endblock %}

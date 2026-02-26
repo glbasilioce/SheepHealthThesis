@@ -10,6 +10,7 @@ from datetime import datetime
 
 # App modules
 from app.predict import predict_disease
+from app.predict import DISEASE_INFO
 from app.models import db, Prediction, HealthReading
 from app.disease_info import get_disease_info
 
@@ -63,20 +64,22 @@ def predict():
         # Check if image contains a sheep
         sheep_check = detect_sheep_simple(filepath)
 
-        # Block if not a sheep (threshold: 45%)
+        # ✨ Block if not a sheep (threshold: 45%) - SHOW IN result.html
         if sheep_check['confidence'] < 45:
-            # Delete uploaded file (cleanup)
-            if os.path.exists(filepath):
-                os.remove(filepath)
+            # Prepare error result for big error display
+            error_result = {
+                'sheep_info': f"The uploaded image does not appear to contain a sheep (Confidence: {sheep_check['confidence']:.0f}%). Please upload a clear image of a sheep. Reason: {sheep_check['reason']}",
+                'sheep_info_level': 'poor',
+                'confidence': sheep_check['confidence']
+            }
             
-            # Show error message
-            flash('❌ Image Validation Failed', 'danger')
-            flash(f'The uploaded image does not appear to contain a sheep (Confidence: {sheep_check["confidence"]:.0f}%).', 'warning')
-            flash('Please upload a clear image of a sheep.', 'info')
-            flash(f'Reason: {sheep_check["reason"]}', 'secondary')
-            
-            return redirect(url_for('main.index'))
+            # Show error page with big error boxes
+            return render_template('result.html',
+                                 result=error_result,
+                                 image_path=f'uploads/{filename}',
+                                 error=True)
 
+        # ✨ If sheep detected, proceed with prediction
         result = predict_disease(filepath)
         result['sheep_detection'] = sheep_check
         
@@ -94,9 +97,9 @@ def predict():
         result['warning'] = None
         result['warning_level'] = 'low'
 
-        # Get disease details
-        result['disease_details'] = get_disease_info(result['predicted_class'])
-        
+        # Get disease details (already in result from predict_disease)
+        result['disease_details'] = result.get('disease_info', DISEASE_INFO.get('Healthy'))
+                
         # Save to database
         prediction_record = Prediction(
             filename=filename,
@@ -215,13 +218,33 @@ def get_health_history():
 
 @bp.route('/export/health-csv')
 def export_health_csv():
-    """Export health data as CSV"""
+    """Export health data as CSV (30-second intervals)"""
     import csv
     from io import StringIO
     from flask import make_response
+    from datetime import timedelta
     
-    # Get all readings
-    readings = HealthReading.query.order_by(HealthReading.timestamp.desc()).limit(1000).all()
+    # Get all readings ordered by time
+    all_readings = HealthReading.query.order_by(HealthReading.timestamp).all()
+    
+    # ✨ Filter to 30-second intervals
+    filtered_readings = []
+    last_timestamp = None
+    
+    for reading in all_readings:
+        if last_timestamp is None:
+            # Always include first reading
+            filtered_readings.append(reading)
+            last_timestamp = reading.timestamp
+        else:
+            # Only include if 30+ seconds have passed
+            time_diff = (reading.timestamp - last_timestamp).total_seconds()
+            if time_diff >= 30:
+                filtered_readings.append(reading)
+                last_timestamp = reading.timestamp
+    
+    # Reverse to show newest first, limit to 1000
+    readings = filtered_readings[::-1][:1000]
     
     # Create CSV
     si = StringIO()
@@ -239,26 +262,27 @@ def export_health_csv():
         writer.writerow([
             r.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
             r.sheep_id,
-            r.ohi_score,
+            f"{r.ohi_score:.2f}",
             r.health_status,
-            r.heart_rate,
-            r.body_temp,
-            r.spo2,
-            r.activity_level,
-            r.ambient_temp,
-            r.humidity
+            f"{r.heart_rate:.1f}",
+            f"{r.body_temp:.1f}",
+            f"{r.spo2:.1f}",
+            f"{r.activity_level:.2f}",
+            f"{r.ambient_temp:.1f}",
+            f"{r.humidity:.1f}"
         ])
     
     # Create response
     output = make_response(si.getvalue())
-    output.headers["Content-Disposition"] = "attachment; filename=health_data.csv"
+    output.headers["Content-Disposition"] = f"attachment; filename=health_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     output.headers["Content-type"] = "text/csv"
     
     return output
 
+
 @bp.route('/export/health-pdf')
 def export_health_pdf():
-    """Export health report as PDF"""
+    """Export health report as PDF (30-second intervals)"""
     from reportlab.lib.pagesizes import letter
     from reportlab.lib import colors
     from reportlab.lib.units import inch
@@ -266,9 +290,27 @@ def export_health_pdf():
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from io import BytesIO
     from flask import make_response
+    from datetime import timedelta
     
-    # Get recent readings
-    readings = HealthReading.query.order_by(HealthReading.timestamp.desc()).limit(50).all()
+    # Get all readings
+    all_readings = HealthReading.query.order_by(HealthReading.timestamp).all()
+    
+    # ✨ Filter to 30-second intervals
+    filtered_readings = []
+    last_timestamp = None
+    
+    for reading in all_readings:
+        if last_timestamp is None:
+            filtered_readings.append(reading)
+            last_timestamp = reading.timestamp
+        else:
+            time_diff = (reading.timestamp - last_timestamp).total_seconds()
+            if time_diff >= 30:
+                filtered_readings.append(reading)
+                last_timestamp = reading.timestamp
+    
+    # Get last 50 filtered readings (newest first)
+    readings = filtered_readings[-50:][::-1] if len(filtered_readings) > 50 else filtered_readings[::-1]
     
     # Create PDF buffer
     buffer = BytesIO()
@@ -291,54 +333,72 @@ def export_health_pdf():
     elements.append(Paragraph("🐑 Sheep Health Monitoring Report", title_style))
     elements.append(Spacer(1, 0.3*inch))
     
+    # ✨ Add data interval info
+    subtitle_style = ParagraphStyle(
+        'Subtitle',
+        parent=styles['Normal'],
+        fontSize=10,
+        textColor=colors.HexColor('#7f8c8d'),
+        spaceAfter=20,
+        alignment=1
+    )
+    subtitle_text = f"""
+    <b>Report Generated:</b> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}<br/>
+    <b>Data Interval:</b> 30 seconds | <b>Total Records:</b> {len(readings)}
+    """
+    elements.append(Paragraph(subtitle_text, subtitle_style))
+    elements.append(Spacer(1, 0.3*inch))
+    
     # Summary info
     if readings:
         avg_ohi = sum(r.ohi_score for r in readings) / len(readings)
         avg_temp = sum(r.body_temp for r in readings) / len(readings)
         avg_hr = sum(r.heart_rate for r in readings) / len(readings)
+        avg_spo2 = sum(r.spo2 for r in readings) / len(readings)
         
         summary_text = f"""
-        <b>Report Generated:</b> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}<br/>
-        <b>Sheep ID:</b> DEMO_SHEEP<br/>
-        <b>Total Readings:</b> {len(readings)}<br/>
+        <b>Sheep ID:</b> {readings[0].sheep_id}<br/>
         <b>Average OHI Score:</b> {avg_ohi:.1f}/100<br/>
         <b>Average Temperature:</b> {avg_temp:.1f}°C<br/>
         <b>Average Heart Rate:</b> {avg_hr:.0f} bpm<br/>
+        <b>Average SpO2:</b> {avg_spo2:.0f}%<br/>
         """
         elements.append(Paragraph(summary_text, styles['Normal']))
         elements.append(Spacer(1, 0.3*inch))
         
         # Recent readings table
-        elements.append(Paragraph("<b>Recent Health Readings</b>", styles['Heading2']))
+        elements.append(Paragraph("<b>Health Readings (30-second intervals)</b>", styles['Heading2']))
         elements.append(Spacer(1, 0.2*inch))
         
         # Table data
         table_data = [[
-            'Time', 'OHI', 'Status', 'HR', 'Temp', 'SpO2'
+            'Time', 'OHI', 'Status', 'HR\n(bpm)', 'Temp\n(°C)', 'SpO2\n(%)', 'Activity'
         ]]
         
-        for r in readings[:20]:
+        for r in readings[:30]:  # Show up to 30 readings in PDF
             table_data.append([
-                r.timestamp.strftime('%m/%d %H:%M'),
+                r.timestamp.strftime('%m/%d %H:%M:%S'),
                 f"{r.ohi_score:.0f}",
-                r.health_status,
+                r.health_status[:8],  # Truncate if too long
                 f"{r.heart_rate:.0f}",
                 f"{r.body_temp:.1f}",
-                f"{r.spo2:.0f}"
+                f"{r.spo2:.0f}",
+                f"{r.activity_level:.1f}"
             ])
         
         # Create table
-        t = Table(table_data, colWidths=[1.2*inch, 0.6*inch, 0.8*inch, 0.6*inch, 0.7*inch, 0.6*inch])
+        t = Table(table_data, colWidths=[1.1*inch, 0.5*inch, 0.7*inch, 0.6*inch, 0.6*inch, 0.6*inch, 0.6*inch])
         t.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#667eea')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('FONTSIZE', (0, 0), (-1, 0), 9),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
             ('FONTSIZE', (0, 1), (-1, -1), 8),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f5f5f5')]),
         ]))
         
         elements.append(t)
@@ -346,6 +406,7 @@ def export_health_pdf():
         # Health status summary
         elements.append(Spacer(1, 0.3*inch))
         elements.append(Paragraph("<b>Health Status Summary</b>", styles['Heading2']))
+        elements.append(Spacer(1, 0.1*inch))
         
         status_counts = {}
         for r in readings:
@@ -357,6 +418,18 @@ def export_health_pdf():
         ])
         
         elements.append(Paragraph(status_text, styles['Normal']))
+        
+        # Footer note
+        elements.append(Spacer(1, 0.3*inch))
+        footer_style = ParagraphStyle(
+            'Footer',
+            parent=styles['Normal'],
+            fontSize=8,
+            textColor=colors.HexColor('#95a5a6'),
+            alignment=1
+        )
+        footer_text = "<i>Note: Data shown at 30-second intervals for clarity. Sensors collect data every 10 seconds.</i>"
+        elements.append(Paragraph(footer_text, footer_style))
     
     else:
         elements.append(Paragraph("No health data available.", styles['Normal']))
@@ -370,7 +443,7 @@ def export_health_pdf():
     
     response = make_response(pdf_data)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'attachment; filename=health_report.pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename=health_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf'
     
     return response
 

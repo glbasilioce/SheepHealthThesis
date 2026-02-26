@@ -1,99 +1,167 @@
 {% extends "base.html" %}
 
-{% block title %}About - Sheep Disease Detection{% endblock %}
+{% block title %}About - Sheep Health System{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-10 mx-auto">
-        <div class="card" style="background: white; padding: 40px;">
-            <h2 class="text-center mb-4">
-                <i class="fas fa-info-circle"></i> About This Project
-            </h2>
-
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <h4><i class="fas fa-bullseye"></i> Project Overview</h4>
-                    <p>
-                        The Sheep Disease Detection System is an AI-powered web application 
-                        that helps identify common sheep diseases through image analysis. 
-                        This project was developed as an undergraduate Computer Engineering 
-                        thesis project.
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">About the System</h1>
+            
+            <!-- Project Title & Description -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title h4">Machine Learning–Based Diagnostic System for Common Sheep Diseases with Integrated Health Status Monitoring</h2>
+                    <p class="card-text">
+                        The Sheep Disease Detection System is an AI-powered web application that helps identify common sheep diseases through image analysis. This project was developed as an undergraduate Computer Engineering thesis project, combining artificial intelligence, computer vision, and health monitoring technologies to create a comprehensive solution for livestock health management.
                     </p>
+                </div>
+            </div>
 
-                    <h4 class="mt-4"><i class="fas fa-brain"></i> Technology</h4>
-                    <ul>
+            <!-- Technology Stack -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5"><i class="fas fa-cogs text-primary"></i> Technology Stack</h3>
+                    <ul class="list-unstyled">
                         <li><strong>Model:</strong> MobileNetV2 (Transfer Learning)</li>
+                        <li><strong>Training Method:</strong> Stratified Split Validation</li>
                         <li><strong>Framework:</strong> TensorFlow/Keras</li>
                         <li><strong>Backend:</strong> Flask (Python)</li>
                         <li><strong>Frontend:</strong> Bootstrap 5</li>
-                        <li><strong>Training Images:</strong> 833 images (augmented)</li>
+                        <li><strong>Database:</strong> SQLite</li>
+                        <li><strong>Training Images:</strong> 733 images (4 classes)</li>
+                        <li><strong>Test Images:</strong> 147 images (stratified split)</li>
                     </ul>
                 </div>
+            </div>
 
-                <div class="col-md-6">
-                    <h4><i class="fas fa-chart-line"></i> Performance</h4>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Disease</th>
-                                <th>Accuracy</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Flystrike</td>
-                                <td><span class="badge bg-success">100.00%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Healthy</td>
-                                <td><span class="badge bg-success">91.67%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Sheep Scab</td>
-                                <td><span class="badge bg-success">90.91%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Orf</td>
-                                <td><span class="badge bg-success">90.00%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Ringworm</td>
-                                <td><span class="badge bg-warning">50.00%</span></td>
-                            </tr>
-                            <tr class="table-primary">
-                                <th>Overall</th>
-                                <th><span class="badge bg-primary">87.50%</span></th>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Model Performance -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5"><i class="fas fa-chart-bar text-success"></i> Model Performance</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Disease</th>
+                                    <th>Accuracy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Healthy</td>
+                                    <td><span class="badge bg-success">100.00%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Orf</td>
+                                    <td><span class="badge bg-success">100.00%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Sheep Scab</td>
+                                    <td><span class="badge bg-success">100.00%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Flystrike</td>
+                                    <td><span class="badge bg-success">90.32%</span></td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td><strong>Overall Accuracy</strong></td>
+                                    <td><strong><span class="badge bg-primary">97.96%</span></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        <i class="fas fa-info-circle"></i> Test Results: 144 out of 147 images correctly classified (30-second interval filtering for data clarity)
+                    </p>
+                </div>
+            </div>
 
-                    <div class="alert alert-info">
-                        <i class="fas fa-lightbulb"></i>
-                        <strong>Note:</strong> Ringworm's lower accuracy is due to limited 
-                        training data (37 images). The model maintains 100% precision for ringworm, 
-                        meaning when it predicts ringworm, it's always correct.
+            <!-- Features -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5"><i class="fas fa-star text-warning"></i> Key Features</h3>
+                    <ul>
+                        <li><strong>AI Disease Detection:</strong> Identifies 4 common sheep diseases with high accuracy</li>
+                        <li><strong>Health Monitoring:</strong> Real-time tracking of vital signs and environmental conditions</li>
+                        <li><strong>Overall Health Index (OHI):</strong> Comprehensive health scoring system</li>
+                        <li><strong>Data Export:</strong> CSV and PDF reports for record-keeping</li>
+                        <li><strong>Prediction History:</strong> Track all disease detections over time</li>
+                        <li><strong>Responsive Design:</strong> Works on desktop, tablet, and mobile devices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Researchers & Developers -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5"><i class="fas fa-users text-info"></i> Researchers & Developers</h3>
+                    <p class="mb-3"><strong>4 CPE-A, College of Engineering</strong></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-user-graduate text-primary"></i> <strong>Gian Lawrence V. Basilio</strong></li>
+                                <li><i class="fas fa-user-graduate text-primary"></i> <strong>Rovic P. Bobotioc</strong></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-user-graduate text-primary"></i> <strong>Javed Daniel T. Dumpe</strong></li>
+                                <li><i class="fas fa-user-graduate text-primary"></i> <strong>John Dhale A. Peralta</strong></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-5">
-                <h4><i class="fas fa-shield-alt"></i> Disclaimer</h4>
-                <div class="alert alert-warning">
-                    <p class="mb-0">
-                        This system is designed as a supportive diagnostic tool and should NOT 
-                        replace professional veterinary examination. Always consult a qualified 
-                        veterinarian for accurate diagnosis and treatment of animal diseases.
-                    </p>
+            <!-- How It Works -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5"><i class="fas fa-lightbulb text-warning"></i> How It Works</h3>
+                    <ol>
+                        <li><strong>Image Upload:</strong> User uploads a clear photo of the sheep</li>
+                        <li><strong>Preprocessing:</strong> Image is resized and normalized for the model</li>
+                        <li><strong>AI Analysis:</strong> MobileNetV2 model processes the image</li>
+                        <li><strong>Disease Detection:</strong> Model predicts the most likely disease with confidence score</li>
+                        <li><strong>Results Display:</strong> User receives diagnosis with disease information and recommendations</li>
+                        <li><strong>Health Monitoring:</strong> Optional integration with sensors for continuous health tracking</li>
+                    </ol>
                 </div>
             </div>
 
-            <div class="mt-4 text-center">
-                <h5><i class="fas fa-graduation-cap"></i> Thesis Project 2026</h5>
-                <p class="text-muted">
-                    Computer Engineering Department<br>
-                    Developed with ❤️ for improving livestock health
-                </p>
+            <!-- Detectable Diseases -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5"><i class="fas fa-disease text-danger"></i> Detectable Diseases</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <h6 class="text-primary"><i class="fas fa-bug"></i> Flystrike</h6>
+                                <p class="small mb-0">Parasitic condition caused by fly larvae infestation</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <h6 class="text-success"><i class="fas fa-heartbeat"></i> Healthy</h6>
+                                <p class="small mb-0">No disease detected, sheep in good health</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <h6 class="text-warning"><i class="fas fa-virus"></i> Orf</h6>
+                                <p class="small mb-0">Viral infection causing sores around mouth and lips</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <h6 class="text-danger"><i class="fas fa-bacteria"></i> Sheep Scab</h6>
+                                <p class="small mb-0">Parasitic skin disease caused by mites</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
