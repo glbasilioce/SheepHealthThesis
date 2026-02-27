@@ -1,3 +1,4 @@
+
 # Python
 venv/
 __pycache__/
@@ -33,7 +34,6 @@ dataset/raw/
 dataset/processed/     
 *.h5
 *.tflite
-models/saved_models/
 app/static/uploads/
 *.db
 *.sqlite
