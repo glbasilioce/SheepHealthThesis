@@ -4,11 +4,29 @@
 
 {% block extra_css %}
 <style>
+    /* Sheep Theme - Health History */
+    body {
+        background: #FFF8E7;
+    }
+
     .history-card {
         background: white;
         padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(139, 115, 85, 0.1);
+        margin-bottom: 20px;
+        border: 2px solid #F5F5DC;
+        transition: all 0.3s ease;
+    }
+
+    .history-card:hover {
+        border-color: #90EE90;
+        transform: translateY(-5px);
+    }
+
+    .history-card h4 {
+        color: #5D4E37;
+        font-weight: 700;
         margin-bottom: 20px;
     }
     
@@ -18,23 +36,148 @@
         margin: 20px 0;
     }
     
+    /* Stats with Sheep Theme */
     .stat-summary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%);
         color: white;
-        padding: 20px;
-        border-radius: 10px;
+        padding: 25px;
+        border-radius: 20px;
         text-align: center;
         margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(144, 238, 144, 0.3);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .stat-summary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(144, 238, 144, 0.5);
     }
     
     .stat-summary h3 {
         margin: 0;
         font-size: 2.5rem;
+        font-weight: 900;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
     
     .stat-summary p {
         margin: 5px 0 0 0;
-        opacity: 0.9;
+        opacity: 0.95;
+        font-weight: 600;
+    }
+
+    /* Different gradient colors for each stat */
+    .stat-summary.stat-2 {
+        background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
+    }
+
+    .stat-summary.stat-3 {
+        background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+    }
+
+    .stat-summary.stat-4 {
+        background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+    }
+
+    /* Table Styling */
+    .table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background: linear-gradient(135deg, #FFFAF0 0%, #F5F5DC 100%);
+        color: #5D4E37;
+        font-weight: 700;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background: #FFF8E7;
+        transform: scale(1.01);
+    }
+
+    /* Badges */
+    .badge {
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-weight: 600;
+    }
+
+    .badge.bg-success {
+        background: #90EE90 !important;
+        color: #2d5016;
+    }
+
+    .badge.bg-warning {
+        background: #ffc107 !important;
+        color: #664d03;
+    }
+
+    .badge.bg-danger {
+        background: #dc3545 !important;
+    }
+
+    /* Export Buttons */
+    .btn-success {
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%) !important;
+        border: none !important;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(144, 238, 144, 0.5);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+        border: none !important;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(220, 53, 69, 0.5);
+    }
+
+    /* Header */
+    h2 {
+        color: #5D4E37;
+        font-weight: 900;
+        margin-bottom: 10px;
+    }
+
+    .text-muted {
+        color: #8B7355 !important;
+    }
+
+    /* Page Header Section */
+    .container-fluid {
+        padding: 30px;
+    }
+
+    /* Add sheep decoration */
+    .container-fluid::before {
+        content: '📊';
+        position: fixed;
+        top: 100px;
+        right: 50px;
+        font-size: 120px;
+        opacity: 0.05;
+        z-index: 0;
+        pointer-events: none;
     }
 </style>
 {% endblock %}
@@ -58,19 +201,19 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat-summary" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <div class="stat-summary stat-2">
                 <h3 id="totalReadings">--</h3>
                 <p>Total Readings</p>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat-summary" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <div class="stat-summary stat-3">
                 <h3 id="avgTemp">--</h3>
                 <p>Avg Temperature (°C)</p>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat-summary" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <div class="stat-summary stat-4">
                 <h3 id="avgHR">--</h3>
                 <p>Avg Heart Rate (bpm)</p>
             </div>

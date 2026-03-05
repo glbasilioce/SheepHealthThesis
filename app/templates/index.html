@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Upload Image - Sheep Disease Detection{% endblock %}
+{% block title %}Home - Sheep Health System{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -8,38 +8,42 @@
         background: white;
         padding: 40px;
         text-align: center;
+        border-radius: 20px;
+        border: 2px solid #F5F5DC;
+        box-shadow: 0 5px 20px rgba(139, 115, 85, 0.1);
     }
     
     .upload-area {
-        border: 3px dashed #ccc;
+        border: 3px dashed #90EE90;
         border-radius: 15px;
         padding: 60px 20px;
         margin: 30px 0;
-        background: #f8f9fa;
+        background: linear-gradient(135deg, #FFFAF0 0%, #FFF8E7 100%);
         transition: all 0.3s ease;
         cursor: pointer;
     }
     
     .upload-area:hover {
-        border-color: var(--primary-color);
-        background: #e9ecef;
+        border-color: #3D8B37;
+        background: #90EE90;
+        transform: scale(1.02);
     }
     
     .upload-area.dragover {
-        border-color: var(--success-color);
-        background: #d4edda;
+        border-color: #3D8B37;
+        background: #90EE90;
     }
     
     .upload-icon {
         font-size: 4rem;
-        color: var(--primary-color);
+        color: #3D8B37;
         margin-bottom: 20px;
     }
     
     .file-name {
         margin-top: 20px;
         font-weight: bold;
-        color: var(--success-color);
+        color: #3D8B37;
     }
     
     .preview-image {
@@ -48,24 +52,7 @@
         margin-top: 20px;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    
-    .feature-card {
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        height: 100%;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 15px;
+        border: 3px solid #90EE90;
     }
 
     .loading-overlay {
@@ -75,7 +62,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(255, 248, 231, 0.95);
         z-index: 9999;
         justify-content: center;
         align-items: center;
@@ -83,12 +70,12 @@
     
     .loading-spinner {
         text-align: center;
-        color: white;
+        color: #5D4E37;
     }
     
     .spinner {
-        border: 8px solid #f3f3f3;
-        border-top: 8px solid #667eea;
+        border: 8px solid #F5F5DC;
+        border-top: 8px solid #90EE90;
         border-radius: 50%;
         width: 80px;
         height: 80px;
@@ -100,124 +87,206 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+
+    .stats-section {
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%);
+        padding: 60px 0;
+        color: white;
+        margin-top: 80px;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 30px;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8 mx-auto">
-        
-        <!-- Camera Capture Section -->
-        <div class="card upload-card mb-4">
-            <h4><i class="fas fa-camera"></i> Capture from Camera</h4>
-            <p class="text-muted">Use your device camera to capture sheep image</p>
-            
-            <div class="text-center">
-                <button type="button" class="btn btn-primary btn-lg" onclick="startCamera()">
-                    <i class="fas fa-camera"></i> Open Camera
-                </button>
-            </div>
-            
-            <!-- Camera Preview (hidden by default) -->
-            <div id="cameraPreview" style="display: none;" class="mt-4">
-                <video id="video" width="100%" autoplay style="max-width: 640px; border-radius: 10px;"></video>
-                <canvas id="canvas" style="display: none;"></canvas>
-                
-                <div class="mt-3">
-                    <button type="button" class="btn btn-success btn-lg me-2" onclick="capturePhoto()">
-                        <i class="fas fa-camera"></i> Capture Photo
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="stopCamera()">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                </div>
-                
-                <div id="capturedImage" style="display: none;" class="mt-4">
-                    <h5>Captured Image:</h5>
-                    <img id="photo" style="max-width: 100%; border-radius: 10px;" />
-                    <div class="mt-3">
-                        <button type="button" class="btn btn-primary btn-lg" onclick="uploadCapturedPhoto()">
-                            <i class="fas fa-upload"></i> Analyze This Photo
-                        </button>
-                        <button type="button" class="btn btn-secondary btn-lg" onclick="retakePhoto()">
-                            <i class="fas fa-redo"></i> Retake
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- OR Divider -->
-        <div class="text-center my-4">
-            <h5 class="text-muted">— OR —</h5>
-        </div>
-        
-        <!-- Upload Section -->
-        <div class="card upload-card">
-            <h1 class="mb-3">
-                <i class="fas fa-sheep"></i> Detect Sheep Diseases
-            </h1>
-            <p class="text-muted mb-4">
-                Upload an image of a sheep to detect potential diseases using our AI model
-            </p>
 
-            <form method="POST" action="{{ url_for('main.predict') }}" enctype="multipart/form-data" id="uploadForm">
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <h4>Drag & Drop Image Here</h4>
-                    <p class="text-muted">or click to browse</p>
-                    <input type="file" name="file" id="fileInput" accept="image/*" style="display: none;" required>
-                </div>
-
-                <div id="preview" style="display: none;">
-                    <img id="previewImage" class="preview-image" alt="Preview">
-                    <p class="file-name" id="fileName"></p>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-lg mt-3" id="submitBtn" disabled>
-                    <i class="fas fa-search"></i> Analyze Image
-                </button>
-            </form>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="hero-sheep-icon">🐑</div>
+        <h1 class="hero-title">Machine Learning–Based Diagnostic System</h1>
+        <p class="hero-subtitle">
+            Advanced AI-Powered Disease Detection for Sheep Health Management<br>
+            <strong>University of Rizal System - Morong</strong>
+        </p>
+        <div class="hero-cta">
+            <a href="#upload-section" class="btn btn-hero-primary">
+                <i class="fas fa-upload"></i> Start Diagnosis
+            </a>
+            <a href="{{ url_for('main.about') }}" class="btn btn-hero-secondary">
+                <i class="fas fa-info-circle"></i> Learn More
+            </a>
         </div>
     </div>
 </div>
 
-<!-- Supported Diseases -->
-<div class="row mt-4">
-    <div class="col-lg-10 mx-auto">
-        <div class="card" style="background: white; padding: 30px;">
-            <h4 class="text-center mb-4">
-                <i class="fas fa-notes-medical"></i> Detectable Diseases
-            </h4>
-            <div class="row text-center">
+<!-- Main Content -->
+<div class="container py-5" id="upload-section">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            
+            <!-- Camera Capture Section -->
+            <div class="card upload-card mb-4">
+                <h4><i class="fas fa-camera"></i> Capture from Camera</h4>
+                <p class="text-muted">Use your device camera to capture sheep image</p>
+                
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="startCamera()">
+                        <i class="fas fa-camera"></i> Open Camera
+                    </button>
+                </div>
+                
+                <!-- Camera Preview (hidden by default) -->
+                <div id="cameraPreview" style="display: none;" class="mt-4">
+                    <video id="video" width="100%" autoplay style="max-width: 640px; border-radius: 10px;"></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-success btn-lg me-2" onclick="capturePhoto()">
+                            <i class="fas fa-camera"></i> Capture Photo
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-lg" onclick="stopCamera()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                    
+                    <div id="capturedImage" style="display: none;" class="mt-4">
+                        <h5>Captured Image:</h5>
+                        <img id="photo" style="max-width: 100%; border-radius: 10px;" />
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-primary btn-lg" onclick="uploadCapturedPhoto()">
+                                <i class="fas fa-upload"></i> Analyze This Photo
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-lg" onclick="retakePhoto()">
+                                <i class="fas fa-redo"></i> Retake
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- OR Divider -->
+            <div class="text-center my-4">
+                <h5 class="text-muted">— OR —</h5>
+            </div>
+            
+            <!-- Upload Section -->
+            <div class="card upload-card">
+                <h1 class="mb-3">
+                    <i class="fas fa-sheep"></i> Detect Sheep Diseases
+                </h1>
+                <p class="text-muted mb-4">
+                    Upload an image of a sheep to detect potential diseases using our AI model
+                </p>
+
+                <form method="POST" action="{{ url_for('main.predict') }}" enctype="multipart/form-data" id="uploadForm">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <h4>Drag & Drop Image Here</h4>
+                        <p class="text-muted">or click to browse</p>
+                        <input type="file" name="file" id="fileInput" accept="image/*" style="display: none;" required>
+                    </div>
+
+                    <div id="preview" style="display: none;">
+                        <img id="previewImage" class="preview-image" alt="Preview">
+                        <p class="file-name" id="fileName"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg mt-3" id="submitBtn" disabled>
+                        <i class="fas fa-search"></i> Analyze Image
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detectable Diseases -->
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card" style="background: white; padding: 40px; border-radius: 20px;">
+                <h4 class="text-center mb-4">
+                    <i class="fas fa-notes-medical"></i> Detectable Diseases
+                </h4>
                 <div class="row g-4">
                     <div class="col-md-3">
                         <div class="disease-card">
                             <i class="fas fa-bug"></i>
-                            <h4>Flystrike</h4>
+                            <h5>Flystrike</h5>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="disease-card">
                             <i class="fas fa-heartbeat"></i>
-                            <h4>Healthy</h4>
+                            <h5>Healthy</h5>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="disease-card">
                             <i class="fas fa-virus"></i>
-                            <h4>Orf</h4>
+                            <h5>Orf</h5>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="disease-card">
                             <i class="fas fa-bacteria"></i>
-                            <h4>Sheep Scab</h4>
+                            <h5>Sheep Scab</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Stats Section -->
+<div class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <span class="stat-number">97.96%</span>
+                    <span class="stat-label">AI Accuracy</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">Disease Classes</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <span class="stat-number">733</span>
+                    <span class="stat-label">Training Images</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <span class="stat-number"><5s</span>
+                    <span class="stat-label">Detection Time</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -257,7 +326,6 @@
 
     function handleFile(file) {
         if (file && file.type.startsWith('image/')) {
-            // Show preview
             const reader = new FileReader();
             reader.onload = (e) => {
                 previewImage.src = e.target.result;
@@ -296,7 +364,7 @@
             document.getElementById('cameraPreview').style.display = 'block';
             
         } catch (error) {
-            alert('Error accessing camera: ' + error.message + '\n\nPlease allow camera access in your browser settings.');
+            alert('Error accessing camera: ' + error.message);
             console.error('Camera error:', error);
         }
     }
@@ -339,29 +407,24 @@
         startCamera();
     }
 
-    // ✨ FIXED VERSION
     function uploadCapturedPhoto() {
         if (!capturedImageBlob) {
             alert('No photo captured!');
             return;
         }
         
-        // Show loading overlay
         document.getElementById('loadingOverlay').style.display = 'flex';
         
-        // Create a hidden form and submit it
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '/predict';
         form.enctype = 'multipart/form-data';
         
-        // Create file input
         const timestamp = new Date().getTime();
         const file = new File([capturedImageBlob], `camera_capture_${timestamp}.jpg`, {
             type: 'image/jpeg'
         });
         
-        // Create FormData and append file
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         
@@ -373,7 +436,6 @@
         form.appendChild(fileInput);
         document.body.appendChild(form);
         
-        // Submit form
         form.submit();
     }
 </script>
@@ -381,7 +443,7 @@
 <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-spinner">
         <div class="spinner"></div>
-        <h3>🔬 Analyzing Image...</h3>
+        <h3>🐑 Analyzing Image...</h3>
         <p>AI is detecting diseases, please wait...</p>
     </div>
 </div>

@@ -1,0 +1,388 @@
+/* ========================================
+   SHEEP-THEMED DESIGN SYSTEM
+   University of Rizal System - Morong
+   ======================================== */
+
+:root {
+    /* Sheep Theme Colors */
+    --sheep-white: #FFFFFF;
+    --sheep-cream: #FFF8E7;
+    --sheep-beige: #F5F5DC;
+    --sheep-wool: #FFFAF0;
+    --sheep-brown: #8B7355;
+    --sheep-dark-brown: #5D4E37;
+    --pasture-green: #90EE90;
+    --pasture-dark: #3D8B37;
+    --sky-blue: #87CEEB;
+    --danger-red: #DC3545;
+    
+    /* Gradients */
+    --gradient-pasture: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%);
+    --gradient-sky: linear-gradient(180deg, #87CEEB 0%, #FFFFFF 100%);
+    --gradient-wool: linear-gradient(135deg, #FFFAF0 0%, #F5F5DC 100%);
+}
+
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
+
+body {
+    background: var(--sheep-cream);
+    color: var(--sheep-dark-brown);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ========================================
+   HEADER WITH LOGO
+   ======================================== */
+
+.navbar {
+    background: var(--sheep-white) !important;
+    box-shadow: 0 2px 10px rgba(139, 115, 85, 0.1);
+    padding: 15px 0;
+    border-bottom: 3px solid var(--pasture-green);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 700;
+    color: var(--sheep-dark-brown) !important;
+}
+
+.school-logo {
+    height: 50px;
+    width: auto;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.brand-title {
+    font-size: 1.2rem;
+    color: var(--sheep-dark-brown);
+    font-weight: 700;
+}
+
+.brand-subtitle {
+    font-size: 0.75rem;
+    color: var(--sheep-brown);
+    font-weight: 400;
+}
+
+.nav-link {
+    color: var(--sheep-dark-brown) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--pasture-dark) !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--pasture-green);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
+.hero-section {
+    background: var(--gradient-sky);
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 5px solid var(--pasture-green);
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%2390EE90' d='M0,50 Q360,100 720,50 T1440,50 L1440,100 L0,100 Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+}
+
+.hero-sheep-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--sheep-dark-brown);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--sheep-brown);
+    margin-bottom: 30px;
+}
+
+.hero-cta {
+    display: inline-flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-hero-primary {
+    background: var(--gradient-pasture);
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(144, 238, 144, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(144, 238, 144, 0.6);
+    background: var(--pasture-dark);
+}
+
+.btn-hero-secondary {
+    background: var(--sheep-white);
+    border: 2px solid var(--sheep-brown);
+    color: var(--sheep-brown);
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-hero-secondary:hover {
+    background: var(--sheep-brown);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* ========================================
+   CARDS & FEATURES
+   ======================================== */
+
+.card {
+    background: var(--sheep-white);
+    border: 2px solid var(--sheep-beige);
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(139, 115, 85, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.2);
+    border-color: var(--pasture-green);
+}
+
+.feature-card {
+    background: var(--gradient-wool);
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid var(--sheep-beige);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    background: var(--sheep-white);
+    border-color: var(--pasture-green);
+    transform: translateY(-10px);
+}
+
+.feature-icon {
+    font-size: 50px;
+    color: var(--pasture-green);
+    margin-bottom: 15px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn-primary {
+    background: var(--gradient-pasture) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(144, 238, 144, 0.4);
+}
+
+.btn-success {
+    background: var(--pasture-green) !important;
+    border: none !important;
+}
+
+.btn-danger {
+    background: var(--danger-red) !important;
+    border: none !important;
+}
+
+/* ========================================
+   DISEASE CARDS
+   ======================================== */
+
+.disease-card {
+    background: var(--sheep-white);
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid var(--sheep-beige);
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 15px rgba(139, 115, 85, 0.1);
+}
+
+.disease-card:hover {
+    border-color: var(--pasture-green);
+    transform: scale(1.05);
+    box-shadow: 0 5px 25px rgba(144, 238, 144, 0.3);
+}
+
+.disease-card i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: var(--pasture-green);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+footer {
+    background: var(--sheep-dark-brown);
+    color: var(--sheep-cream);
+    padding: 40px 0 20px 0;
+    margin-top: 80px;
+    border-top: 5px solid var(--pasture-green);
+}
+
+.footer-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.footer-logo {
+    height: 60px;
+    width: auto;
+    background: white;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.footer-school-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--sheep-cream);
+}
+
+.footer-team {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--sheep-beige);
+}
+
+.footer-divider {
+    border-top: 1px solid rgba(245, 245, 220, 0.3);
+    margin: 20px 0;
+}
+
+.footer-credits {
+    font-size: 0.85rem;
+    color: var(--sheep-beige);
+}
+
+/* ========================================
+   SHEEP DECORATIONS
+   ======================================== */
+
+.sheep-decoration {
+    font-size: 24px;
+    opacity: 0.1;
+    position: absolute;
+    animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(10px, -10px) rotate(5deg); }
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+.loading-overlay {
+    background: rgba(255, 248, 231, 0.95);
+}
+
+.spinner {
+    border-top-color: var(--pasture-green) !important;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .school-logo {
+        height: 40px;
+    }
+    
+    .brand-title {
+        font-size: 1rem;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -1,65 +1,370 @@
 {% extends "base.html" %}
 
-{% block title %}Prediction History{% endblock %}
+{% block title %}Prediction History - Sheep Health System{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Sheep Theme - Prediction History */
+    .history-hero {
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%);
+        padding: 60px 20px;
+        text-align: center;
+        color: white;
+        border-radius: 0 0 30px 30px;
+        margin-bottom: 40px;
+    }
+
+    .history-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .history-card {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(139, 115, 85, 0.1);
+        border: 2px solid #F5F5DC;
+    }
+
+    /* Table Styling */
+    .table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background: linear-gradient(135deg, #FFFAF0 0%, #F5F5DC 100%);
+        color: #5D4E37;
+        font-weight: 700;
+    }
+
+    .table thead th {
+        padding: 20px 15px;
+        border: none;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody td {
+        padding: 20px 15px;
+        vertical-align: middle;
+        color: #5D4E37;
+        border-color: #F5F5DC;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .table tbody tr:hover {
+        background: linear-gradient(135deg, #FFF8E7 0%, #FFFAF0 100%);
+        transform: scale(1.01);
+        box-shadow: 0 3px 10px rgba(139, 115, 85, 0.1);
+    }
+
+    /* Badges */
+    .badge {
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge.bg-primary {
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%) !important;
+        color: white !important;
+        box-shadow: 0 3px 10px rgba(144, 238, 144, 0.3);
+    }
+
+    .badge.disease-flystrike {
+        background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%) !important;
+        color: white !important;
+    }
+
+    .badge.disease-healthy {
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%) !important;
+        color: white !important;
+    }
+
+    .badge.disease-orf {
+        background: linear-gradient(135deg, #ffd43b 0%, #fab005 100%) !important;
+        color: #5D4E37 !important;
+    }
+
+    .badge.disease-sheep-scab {
+        background: linear-gradient(135deg, #c0392b 0%, #922b21 100%) !important;
+        color: white !important;
+    }
+
+    /* Progress Bars */
+    .progress {
+        background: #F5F5DC;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .progress-bar {
+        border-radius: 15px;
+        font-weight: 700;
+        transition: width 1s ease;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .progress-bar.bg-success {
+        background: linear-gradient(90deg, #90EE90 0%, #3D8B37 100%) !important;
+    }
+
+    .progress-bar.bg-warning {
+        background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%) !important;
+    }
+
+    .progress-bar.bg-danger {
+        background: linear-gradient(90deg, #dc3545 0%, #c82333 100%) !important;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: #8B7355;
+    }
+
+    .empty-state i {
+        font-size: 6rem;
+        margin-bottom: 30px;
+        opacity: 0.2;
+        color: #90EE90;
+    }
+
+    .empty-state h4 {
+        color: #5D4E37;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    /* Stats Summary */
+    .stats-summary {
+        background: linear-gradient(135deg, #FFFAF0 0%, #F5F5DC 100%);
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        border: 2px solid #90EE90;
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #5D4E37;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #8B7355;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: linear-gradient(135deg, #90EE90 0%, #3D8B37 100%) !important;
+        border: none !important;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 20px rgba(144, 238, 144, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(144, 238, 144, 0.5);
+    }
+
+    /* Row Number */
+    .row-number {
+        font-weight: 900;
+        font-size: 1.2rem;
+        color: #90EE90;
+    }
+
+    /* Filename */
+    .filename {
+        font-family: 'Courier New', monospace;
+        font-size: 0.85rem;
+        color: #8B7355;
+        background: #FFF8E7;
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
+
+    /* Timestamp */
+    .timestamp {
+        color: #8B7355;
+        font-size: 0.95rem;
+    }
+
+    .timestamp i {
+        color: #90EE90;
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-10 mx-auto">
-        <div class="card" style="background: white; padding: 40px;">
-            <h2 class="text-center mb-4">
-                <i class="fas fa-history"></i> Prediction History
-            </h2>
+
+<!-- Hero Section -->
+<div class="history-hero">
+    <div class="container">
+        <div style="font-size: 60px; margin-bottom: 20px;">🔬</div>
+        <h1>Disease Prediction History</h1>
+        <p class="lead mb-0">Complete record of all disease detection analyses</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-lg-11 mx-auto">
             
             {% if predictions %}
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Image</th>
-                            <th>Prediction</th>
-                            <th>Confidence</th>
-                            <th>Date & Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pred in predictions %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ pred.filename }}</td>
-                            <td>
-                                <span class="badge bg-primary">{{ pred.predicted_class }}</span>
-                            </td>
-                            <td>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar 
-                                        {% if pred.confidence >= 75 %}bg-success
-                                        {% elif pred.confidence >= 60 %}bg-warning
-                                        {% else %}bg-danger{% endif %}"
-                                        style="width: {{ pred.confidence }}%">
-                                        {{ "%.1f"|format(pred.confidence) }}%
+            
+            <!-- Statistics Summary -->
+            <div class="stats-summary">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <span class="stat-number">{{ predictions|length }}</span>
+                            <span class="stat-label">Total Predictions</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <span class="stat-number">
+                                {% set healthy_count = predictions|selectattr('predicted_class', 'equalto', 'Healthy')|list|length %}
+                                {{ healthy_count }}
+                            </span>
+                            <span class="stat-label">Healthy Sheep</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <span class="stat-number">
+                                {% set avg_conf = (predictions|sum(attribute='confidence') / predictions|length)|round(1) %}
+                                {{ avg_conf }}%
+                            </span>
+                            <span class="stat-label">Avg Confidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Card -->
+            <div class="history-card">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-history"></i> Prediction History
+                </h2>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>Image Filename</th>
+                                <th>Detected Disease</th>
+                                <th style="width: 250px;">Confidence Level</th>
+                                <th>Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pred in predictions %}
+                            <tr>
+                                <td>
+                                    <span class="row-number">{{ loop.index }}</span>
+                                </td>
+                                <td>
+                                    <span class="filename">
+                                        <i class="fas fa-image"></i> {{ pred.filename }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge disease-{{ pred.predicted_class.lower().replace(' ', '-') }}">
+                                        {% if pred.predicted_class == 'Healthy' %}
+                                            <i class="fas fa-check-circle"></i>
+                                        {% elif pred.predicted_class == 'Flystrike' %}
+                                            <i class="fas fa-bug"></i>
+                                        {% elif pred.predicted_class == 'Orf' %}
+                                            <i class="fas fa-virus"></i>
+                                        {% elif pred.predicted_class == 'Sheep Scab' %}
+                                            <i class="fas fa-bacteria"></i>
+                                        {% endif %}
+                                        {{ pred.predicted_class }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="progress" style="height: 25px;">
+                                        <div class="progress-bar 
+                                            {% if pred.confidence >= 75 %}bg-success
+                                            {% elif pred.confidence >= 60 %}bg-warning
+                                            {% else %}bg-danger{% endif %}"
+                                            style="width: {{ pred.confidence }}%">
+                                            {{ "%.1f"|format(pred.confidence) }}%
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>{{ pred.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+                                <td>
+                                    <span class="timestamp">
+                                        <i class="fas fa-clock"></i>
+                                        {{ pred.timestamp.strftime('%b %d, %Y') }}<br>
+                                        <small>{{ pred.timestamp.strftime('%I:%M %p') }}</small>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
+            
             {% else %}
-            <div class="alert alert-info text-center">
-                <i class="fas fa-info-circle"></i>
-                No predictions yet. Upload an image to get started!
+            
+            <!-- Empty State -->
+            <div class="history-card">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h4>No Predictions Yet</h4>
+                    <p class="text-muted mb-4">Upload a sheep image to start detecting diseases</p>
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-upload"></i> Upload First Image
+                    </a>
+                </div>
             </div>
+            
             {% endif %}
             
+            <!-- Action Buttons -->
             <div class="text-center mt-4">
-                <a href="{{ url_for('main.index') }}" class="btn btn-primary">
-                    <i class="fas fa-upload"></i> New Prediction
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle"></i> New Prediction
                 </a>
             </div>
+            
         </div>
     </div>
 </div>
+
 {% endblock %}
