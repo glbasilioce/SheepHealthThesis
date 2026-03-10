@@ -15,6 +15,8 @@ MODEL_PATH = os.path.join(BASE_DIR, 'models', 'sheep_disease_4class_stratified.k
 # Google Drive file ID
 GDRIVE_FILE_ID = '1UqAnizs0WPHK74rrs-jfxz_PvGPl5wZr'
 
+FORCE_DOWNLOAD = True
+
 # ✨ UPDATED CLASS NAMES (4 classes, no ringworm)
 CLASS_NAMES = ['Flystrike', 'Healthy', 'Orf', 'Sheep Scab']
 
@@ -140,6 +142,11 @@ def download_model_from_gdrive():
     if os.path.exists(MODEL_PATH):
         print(f"Model already exists at {MODEL_PATH}")
         return
+
+    # Delete old corrupted model if exists
+    if os.path.exists(MODEL_PATH):
+        print(f"Deleting old model file...")
+        os.remove(MODEL_PATH)
     
     print(f"Downloading model from Google Drive...")
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
