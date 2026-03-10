@@ -139,10 +139,10 @@ DISEASE_INFO = {
 
 def download_model_from_gdrive():
     """Download model from Google Drive if not exists"""
-    if os.path.exists(MODEL_PATH):
+    if os.path.exists(MODEL_PATH) and not FORCE_DOWNLOAD:
         print(f"Model already exists at {MODEL_PATH}")
         return
-
+    
     # Delete old corrupted model if exists
     if os.path.exists(MODEL_PATH):
         print(f"Deleting old model file...")
