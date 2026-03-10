@@ -2,22 +2,21 @@
 Disease Prediction Module
 """
 
-from tensorflow import keras
+import os
 import numpy as np
 from PIL import Image
-import os
+import keras
+import requests
 
-# ✨ NEW MODEL PATH - Stratified 4-class model
-MODEL_PATH = 'models/sheep_disease_4class_stratified.keras'
+# Define paths
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = os.path.join(BASE_DIR, 'models', 'sheep_disease_4class_stratified.keras')
+
+# Google Drive file ID
+GDRIVE_FILE_ID = '1UqAnizs0WPHK74rrs-jfxz_PvGPl5wZr'
 
 # ✨ UPDATED CLASS NAMES (4 classes, no ringworm)
 CLASS_NAMES = ['Flystrike', 'Healthy', 'Orf', 'Sheep Scab']
-
-# Load model (once at startup)
-print(f"Loading model: {MODEL_PATH}")
-model = keras.models.load_model(MODEL_PATH)
-print(f"✅ Model loaded successfully!")
-print(f"Classes: {CLASS_NAMES}")
 
 # ✨ Disease Information Dictionary
 DISEASE_INFO = {
@@ -135,6 +134,53 @@ DISEASE_INFO = {
         'color': 'danger'
     }
 }
+
+def download_model_from_gdrive():
+    """Download model from Google Drive if not exists"""
+    if os.path.exists(MODEL_PATH):
+        print(f"Model already exists at {MODEL_PATH}")
+        return
+    
+    print(f"Downloading model from Google Drive...")
+    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+    
+    # Google Drive direct download URL
+    url = f"https://drive.google.com/uc?export=download&id={GDRIVE_FILE_ID}"
+    
+    # Download the file
+    response = requests.get(url, stream=True)
+    
+    # Handle large file download confirmation
+    if 'download_warning' in response.text or response.status_code != 200:
+        # Try alternative method for large files
+        session = requests.Session()
+        response = session.get(url, stream=True)
+        
+        # Check for virus scan warning
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                params = {'id': GDRIVE_FILE_ID, 'confirm': value}
+                response = session.get(url, params=params, stream=True)
+                break
+    
+    # Save the file
+    total_size = 0
+    with open(MODEL_PATH, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                f.write(chunk)
+                total_size += len(chunk)
+    
+    print(f"Model downloaded successfully! Size: {total_size / (1024*1024):.2f} MB")
+
+# Download model if needed
+download_model_from_gdrive()
+
+# Load model (once at startup)
+print(f"Loading model: {MODEL_PATH}")
+model = keras.models.load_model(MODEL_PATH)
+print(f"✅ Model loaded successfully!")
+print(f"Classes: {CLASS_NAMES}")
 
 def predict_disease(image_path):
     """
